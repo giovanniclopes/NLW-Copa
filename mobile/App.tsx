@@ -5,7 +5,7 @@ export default function App() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Hello React Native!</Text>
-      <StatusBar style="auto" />
+      <StatusBar style="inverted" />
     </View>
   );
 }
