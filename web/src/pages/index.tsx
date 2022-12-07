@@ -3,7 +3,7 @@ import AppPreviewImg from "../assets/app-nlw-copa-preview.png";
 import LogoImg from "../assets/logo.svg";
 import usersAvatarExampleImg from "../assets/users-avatar-example.png";
 import iconCheckImg from "../assets/icon-check.svg";
-import { api } from './../lib/axios';
+import { api } from "./../lib/axios";
 import { FormEvent, useState } from "react";
 
 interface HomeProps {
@@ -13,27 +13,29 @@ interface HomeProps {
 }
 
 export default function Home(props: HomeProps) {
-  const [poolTitle, setPoolTitle] = useState('')
+  const [poolTitle, setPoolTitle] = useState("");
 
-  console.log(poolTitle)
-  
+  console.log(poolTitle);
+
   async function createPool(event: FormEvent) {
-    event.preventDefault()
+    event.preventDefault();
 
     try {
-      const response = await api.post('/pools', {
-      title: poolTitle,
-    });
+      const response = await api.post("/pools", {
+        title: poolTitle,
+      });
 
-      const { code } = response.data
+      const { code } = response.data;
 
-      await navigator.clipboard.writeText(code)
+      await navigator.clipboard.writeText(code);
 
-      alert('Bolão criado com sucesso, o código foi copiado para a área de transferência!')
-      setPoolTitle('')
+      alert(
+        "Bolão criado com sucesso, o código foi copiado para a área de transferência!"
+      );
+      setPoolTitle("");
     } catch (err) {
-      console.log(err)
-      alert('Falha ao criar o bolão. Tente novamente!')
+      console.log(err);
+      alert("Falha ao criar o bolão. Tente novamente!");
     }
   }
 
@@ -48,8 +50,8 @@ export default function Home(props: HomeProps) {
           <Image src={usersAvatarExampleImg} alt="" />
 
           <strong className="text-gray-100 text-xl">
-            <span className="text-ignite-500">{props.userCount}</span> pessoas já estão
-            usando
+            <span className="text-ignite-500">{props.userCount}</span> pessoas
+            já estão usando
           </strong>
         </div>
 
@@ -59,10 +61,13 @@ export default function Home(props: HomeProps) {
             type="text"
             required
             placeholder="Qual nome do seu bolão?"
-            onChange={event => setPoolTitle(event.target.value)}
+            onChange={(event) => setPoolTitle(event.target.value)}
             value={poolTitle}
           />
-          <button className="bg-yellow-500 px-6 py-4 rounded text-gray-900 font-bold text-sm uppercase hover:bg-yellow-700" type="submit">
+          <button
+            className="bg-yellow-500 px-6 py-4 rounded text-gray-900 font-bold text-sm uppercase hover:bg-yellow-700"
+            type="submit"
+          >
             Criar seu bolão
           </button>
         </form>
@@ -101,21 +106,18 @@ export default function Home(props: HomeProps) {
 }
 
 export const getServerSideProps = async () => {
-  const [
-    poolCountResponse, 
-    guessCountResponse, 
-    userCountResponse
-  ] = await Promise.all([
-    api.get("pools/count"),
-    api.get("pools/guesses"),
-    api.get("users/count"),
-  ]);
+  const [poolCountResponse, guessCountResponse, userCountResponse] =
+    await Promise.all([
+      api.get("pools/count"),
+      api.get("pools/guesses"),
+      api.get("users/count"),
+    ]);
 
   return {
     props: {
       poolCount: poolCountResponse.data.count,
       guessCount: guessCountResponse.data.count,
       userCount: userCountResponse.data.count,
-    }
-  }
-}
+    },
+  };
+};
