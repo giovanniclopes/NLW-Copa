@@ -24,7 +24,7 @@ export const AuthContext = createContext({} as AuthContextDataProps);
 
 export function AuthContextProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<UserProps>({} as UserProps);
-  const [isUserLoading, setUSerLoading] = useState(false);
+  const [isUserLoading, setIsUserLoading] = useState(false);
 
   const [request, response, promptAsync] = Google.useAuthRequest({
     clientId:
@@ -35,25 +35,25 @@ export function AuthContextProvider({ children }: AuthProviderProps) {
 
   async function signIn() {
     try {
-      setUSerLoading(true);
+      setIsUserLoading(true);
       await promptAsync();
     } catch (error) {
       console.log(error);
       throw error;
     } finally {
-      setUSerLoading(false);
+      setIsUserLoading(false);
     }
   }
 
   async function signInWithGoogle(access_token: string) {
-    console.log('TOKEN DE AUTENTICAÇÃO ===>', access_token)
+    console.log("TOKEN DE AUTENTICAÇÃO ===>", access_token);
   }
 
   useEffect(() => {
-    if(response?.type === 'success' && response.authentication?.accessToken) {
+    if (response?.type === "success" && response.authentication?.accessToken) {
       signInWithGoogle(response.authentication.accessToken);
     }
-  }, [response])
+  }, [response]);
 
   return (
     <AuthContext.Provider
